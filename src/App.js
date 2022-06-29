@@ -101,8 +101,11 @@ class App extends Component{
   constructor(props){
     super(props);
     this.state = {
-      // key : value 값으로 
+      // key : value 값 형태로 사용
+      mode:'read',
+      selected_contents_id:2,
       subject:{title:'WEB',sub:'World wide Web'},
+      welcome:{title:'Welcome',desc:'Hello,React!!!'},
       contents:[
         {id:1,title:'HTML',desc:'HTML is for information'},
         {id:2,title:'CSS',desc:'CSS is for design'},
@@ -110,13 +113,60 @@ class App extends Component{
       ]
     }
   }
+  //화면 출력하는 부분
   render(){
+    console.log('App render');
+    let _title,_desc = null;
+    if(this.state.mode === 'welcome'){
+      _title = this.state.welcome.title;
+      _desc = this.state.welcome.desc;
+    }else if(this.state.mode === 'read'){
+      // _title = this.state.contents[0].title;
+      // _desc = this.state.contents[0].desc;
+
+      let i = 0;
+      while(i<this.state.contents.length){
+        let data = this.state.contents[i];
+        if(data.id === this.state.selected_contents_id){
+          _title = data.title;
+          _desc = data.desc;
+          break;
+        }
+        i = i + 1;
+      }
+
+    }
+
     return(
       <div>
-        <Subject title={this.state.subject.title} sub={this.state.subject.sub}></Subject> {/* == <Subject/>*/}
         <Subject title="연습용" sub="함수의 재사용이 가능하다"></Subject>
-        <TOC data={this.state.contents}></TOC>
-        <Contents title="HTML" desc="HTML is HyperText Markup Language."/>
+        
+        {/* header와 같은 코드
+        <Subject title={this.state.subject.title} sub={this.state.subject.sub}></Subject> == <Subject/> */}
+        
+        <Subject 
+          title={this.state.subject.title} 
+          sub={this.state.subject.sub}
+          onChangePage={function(){this.setState({mode:'welcome'})}.bind(this)}
+        >
+        </Subject>
+
+        {/* <header>
+          <h1><a href='/' onClick={function(e){
+            e.preventDefault();
+            this.setState({mode:'welcome'});
+          }.bind(this)}>{this.state.subject.title}</a></h1>
+          {this.state.subject.sub};
+        </header> */}
+
+        <TOC data={this.state.contents}
+        onChangePage={function(id){
+          this.setState(
+            {mode:'read',selected_contents_id:Number(id)}
+          )}.bind(this)}
+        ></TOC>
+        
+        <Contents title={_title} desc={_desc}/>
       </div>
     );
   }
