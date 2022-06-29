@@ -98,12 +98,24 @@ import Subject from './components/Subject';
 // }
 
 class App extends Component{
+  constructor(props){
+    super(props);
+    this.state = {
+      // key : value 값으로 
+      subject:{title:'WEB',sub:'World wide Web'},
+      contents:[
+        {id:1,title:'HTML',desc:'HTML is for information'},
+        {id:2,title:'CSS',desc:'CSS is for design'},
+        {id:3,title:'JavaScript',desc:'JavaScript is for interactive'}
+      ]
+    }
+  }
   render(){
     return(
       <div>
-        <Subject title="WEB" sub="world wide web"></Subject> {/* == <Subject/>*/}
+        <Subject title={this.state.subject.title} sub={this.state.subject.sub}></Subject> {/* == <Subject/>*/}
         <Subject title="연습용" sub="함수의 재사용이 가능하다"></Subject>
-        <TOC></TOC>
+        <TOC data={this.state.contents}></TOC>
         <Contents title="HTML" desc="HTML is HyperText Markup Language."/>
       </div>
     );
