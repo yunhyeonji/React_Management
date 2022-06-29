@@ -1,4 +1,4 @@
-.App {
+/* .App {
   text-align: center;
 }
 
@@ -35,4 +35,11 @@
   to {
     transform: rotate(360deg);
   }
+} */
+
+
+/* 내가 하나 만들어보자구요 */
+body{
+  padding: 10px;
+  background-color: rgb(129, 247, 247);
 }
