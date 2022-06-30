@@ -5,6 +5,7 @@ import React,{ Component } from 'react';  //클래스로 만들때 필요한 imp
 import TOC from './components/TOC';
 import Contents from './components/Contents';
 import Subject from './components/Subject';
+import Control from './components/Control';
 
   //함수로 만들기
 // function App() {
@@ -165,7 +166,14 @@ class App extends Component{
             {mode:'read',selected_contents_id:Number(id)}
           )}.bind(this)}
         ></TOC>
-        
+
+        <Control onChangeMode={function(_mode){
+          this.setState({
+            mode:_mode
+          });
+        }.bind(this)}>
+        </Control>
+
         <Contents title={_title} desc={_desc}/>
       </div>
     );
