@@ -3,9 +3,11 @@ import './App.css';
 // import { Component } from 'react';     // 함수로 만들때 필요한 import구문
 import React,{ Component } from 'react';  //클래스로 만들때 필요한 import구문
 import TOC from './components/TOC';
-import Contents from './components/Contents';
+import ReadContents from './components/ReadContents';
 import Subject from './components/Subject';
 import Control from './components/Control';
+import CreateContents from './components/CreateContents';
+import UpdateContents from './components/UpdateContents';
 
   //함수로 만들기
 // function App() {
@@ -101,10 +103,11 @@ import Control from './components/Control';
 class App extends Component{
   constructor(props){
     super(props);
+    this.max_content_id = 3;
     this.state = {
       // key : value 값 형태로 사용
       mode:'read',
-      selected_contents_id:2,
+      selected_contents_id:0,
       subject:{title:'WEB',sub:'World wide Web'},
       welcome:{title:'Welcome',desc:'Hello,React!!!'},
       contents:[
@@ -117,10 +120,13 @@ class App extends Component{
   //화면 출력하는 부분
   render(){
     console.log('App render');
-    let _title,_desc = null;
+    let _title,_desc = null, _article;
+
+    //모드가 무엇인가에 따라서 contents부분에 출력되는 것을 다르게 하라
     if(this.state.mode === 'welcome'){
       _title = this.state.welcome.title;
       _desc = this.state.welcome.desc;
+      _article = <ReadContents title={_title} desc={_desc}/> ;
     }else if(this.state.mode === 'read'){
       // _title = this.state.contents[0].title;
       // _desc = this.state.contents[0].desc;
@@ -135,7 +141,25 @@ class App extends Component{
         }
         i = i + 1;
       }
+      _article = <ReadContents title={_title} desc={_desc}/> ;
+    }else if(this.state.mode === 'create'){
+      _article = <CreateContents onSubmit={function(_title,_desc){
+        this.max_content_id = this.max_content_id + 1;
 
+        // this.state.contents.push(
+        //   {id:this.max_content_id,title:_title,desc:_desc}
+        // );
+
+        let _contents = this.state.contents.concat(
+          {id:this.max_content_id,title:_title,desc:_desc}
+        );
+
+        this.setState({
+          // contents : this.state.contents
+          contents : _contents
+        })
+
+      }.bind(this)}></CreateContents>
     }
 
     return(
@@ -174,7 +198,9 @@ class App extends Component{
         }.bind(this)}>
         </Control>
 
-        <Contents title={_title} desc={_desc}/>
+        {/* 변수에 따라 _article이 달라짐 */}
+        {_article}
+
       </div>
     );
   }
