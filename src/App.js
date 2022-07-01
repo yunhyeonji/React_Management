@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.css';
 import React, { Component } from 'react';
 import TOC from './components/TOC';
@@ -76,7 +75,7 @@ class App extends Component{  //main 컴포넌트
                       let _contents = Array.from(this.state.contents);  //유사배열
                       let i = 0;
                       while(i < _contents.length){
-                        if(_contents[i].id == _id){
+                        if(_contents[i].id === _id){
                           _contents[i] = {id:_id, title:_title, desc:_desc};
                           break;
                         }
@@ -117,7 +116,27 @@ class App extends Component{  //main 컴포넌트
         ></TOC>
         <Control
           onChangeMode={function(_mode){
-            this.setState({mode:_mode});
+            if(_mode === 'delete'){
+              if(window.confirm('really?')){
+                let _contents = Array.from(this.state.contents); //원본데이터는 남아있는 상태
+                let i = 0;
+                while(i<_contents.length){
+                  if(_contents[i].id === this.state.selected_content_id){
+                    _contents.splice(i,1);
+                    break;
+                  }
+                  i=i+1;
+                }
+                this.setState({
+                  //모드가 delete인 상태로 계속 두면 화면모든것이 사라짐
+                  //하나만 삭제하고 mode를 변경해야함
+                  mode:'welcome', 
+                  contents: _contents
+                })
+              }
+            }else{
+              this.setState({mode:_mode});
+            }
           }.bind(this)}
         ></Control>
         {this.getContent()}
